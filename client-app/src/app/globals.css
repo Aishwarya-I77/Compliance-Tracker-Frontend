@@ -1,0 +1,44 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --font-poppins: "Poppins", "Segoe UI", sans-serif;
+  --color-brand:       #1a4fba;
+  --color-brand-dark:  #1541a0;
+  --color-text:        #0a0a0a;
+  --color-muted:       #7A8595;
+  --color-border:      #e2e8f0;
+  --color-placeholder: #C5C1C1;
+  --color-bg:          #f1f5f9;
+}
+
+html,
+body {
+  font-family: var(--font-poppins);
+  color: var(--color-text);
+  background: linear-gradient(145deg, #cdd8e8 0%, #dce7f3 40%, #e8eef7 100%);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Accessibility: visually hidden */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
