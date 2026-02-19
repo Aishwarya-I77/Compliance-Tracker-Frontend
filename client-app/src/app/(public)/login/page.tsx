@@ -1,13 +1,15 @@
 // src/app/login/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
-import type { ChangeEvent } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Form, Input, Button, message } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import styled from "styled-components";
-import { authApi, ApiError } from "@/lib/apiClient";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
+import { useLoginMutation } from "@/features/auth/authApi";
+import { ROUTES } from "@/constants/routes";
 import { saveSession, getSession } from "@/lib/auth";
 import { LoginRequest } from "@/types/auth";
 
@@ -294,28 +296,23 @@ const CardFront = styled.div`
 export default function LoginPage() {
   const router = useRouter();
   const [form] = Form.useForm<LoginRequest>();
-  const [loading, setLoading] = useState(false);
+  const [login, { isLoading }] = useLoginMutation();
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
-    if (getSession()) router.replace("/dashboard");
+    if (getSession()) router.replace(ROUTES.dashboard);
   }, [router]);
 
   const handleLogin = async (values: LoginRequest) => {
-    setLoading(true);
     try {
-      const response = await authApi.login(values);
+      const response = await login(values).unwrap();
       saveSession(response);
       messageApi.success(`Welcome back, ${response.name}!`);
-      setTimeout(() => router.replace("/dashboard"), 600);
+      setTimeout(() => router.replace(ROUTES.dashboard), 600);
     } catch (err) {
-      if (err instanceof ApiError) {
-        messageApi.error(err.status === 401 ? "Invalid email or password." : "Something went wrong.");
-      } else {
-        messageApi.error("Unable to connect to server.");
-      }
-    } finally {
-      setLoading(false);
+      const error = err as FetchBaseQueryError | SerializedError;
+      const status = "status" in error ? error.status : undefined;
+      messageApi.error(status === 401 ? "Invalid email or password." : "Something went wrong.");
     }
   };
 
@@ -363,8 +360,8 @@ export default function LoginPage() {
               </ForgotWrapper>
 
               <Form.Item style={{ marginTop: 0, marginBottom: 0, width: 343 }}>
-                <SubmitBtn type="primary" htmlType="submit" loading={loading} block>
-                  {loading ? "Signing in…" : "Log In"}
+                <SubmitBtn type="primary" htmlType="submit" loading={isLoading} block>
+                  {isLoading ? "Signing in..." : "Log In"}
                 </SubmitBtn>
               </Form.Item>
             </StyledForm>

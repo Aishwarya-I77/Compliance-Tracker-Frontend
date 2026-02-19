@@ -4,30 +4,29 @@
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  AppstoreOutlined, AuditOutlined, SendOutlined,
-  RetweetOutlined, BellOutlined, BarChartOutlined,
   LockOutlined, MenuFoldOutlined, MenuUnfoldOutlined,
 } from "@ant-design/icons";
 import {
   SidebarWrap, LogoArea, LogoImg, LogoLetter,
   NavWrap, NavGroupGap, NavItem, NavInner,
-  NavIcon, NavLabel, LockIcon,
+  NavIcon, NavIconImage, NavLabel, LockIcon,
   BottomDivider, CollapseBtn,
-} from "./styles/Sidebar.styles";
+} from "./Sidebar.styles";
+
 
 // ─── Nav config ───────────────────────────────────
-type NavItemType = { key: string; label: string; icon: React.ReactNode; href: string; locked: boolean };
+type NavItemType = { key: string; label: string; iconSrc: string; href: string; locked: boolean };
 
 const UNLOCKED_NAV: NavItemType[] = [
-  { key: "dashboard",     label: "Dashboard",     icon: <AppstoreOutlined />, href: "/dashboard",     locked: false },
-  { key: "registrations", label: "Registrations", icon: <AuditOutlined />,   href: "/registrations", locked: false },
-  { key: "returns",       label: "Returns",       icon: <RetweetOutlined />, href: "/returns",       locked: false },
-  { key: "remittance",    label: "Remittance",    icon: <SendOutlined />,    href: "/remittance",    locked: false },
+  { key: "dashboard",     label: "Dashboard",     iconSrc: "/assets/icons/dashboard.png",     href: "/dashboard",     locked: false },
+  { key: "registrations", label: "Registrations", iconSrc: "/assets/icons/registrations.png", href: "/registrations", locked: false },
+  { key: "returns",       label: "Returns",       iconSrc: "/assets/icons/returns.png",       href: "/returns",       locked: false },
+  { key: "remittance",    label: "Remittance",    iconSrc: "/assets/icons/remittance.png",    href: "/remittance",    locked: false },
 ];
 
 const LOCKED_NAV: NavItemType[] = [
-  { key: "notices",   label: "Notices",   icon: <BellOutlined />,     href: "/notices",   locked: true },
-  { key: "analytics", label: "Analytics", icon: <BarChartOutlined />, href: "/analytics", locked: true },
+  { key: "notices",   label: "Notices",   iconSrc: "/assets/icons/notices.png",   href: "/notices",   locked: true },
+  { key: "analytics", label: "Analytics", iconSrc: "/assets/icons/analytics.png", href: "/analytics", locked: true },
 ];
 
 // ─── Component ────────────────────────────────────
@@ -44,7 +43,7 @@ export default function Sidebar({ onCollapse }: { onCollapse?: (c: boolean) => v
     onCollapse?.(next);
   };
 
-  const renderItem = ({ key, label, icon, href, locked }: NavItemType) => (
+  const renderItem = ({ key, label, iconSrc, href, locked }: NavItemType) => (
     <NavItem
       key={key}
       $active={isActive(href)}
@@ -52,7 +51,9 @@ export default function Sidebar({ onCollapse }: { onCollapse?: (c: boolean) => v
       onClick={() => !locked && router.push(href)}
     >
       <NavInner $collapsed={collapsed}>
-        <NavIcon $active={isActive(href)} $locked={locked}>{icon}</NavIcon>
+        <NavIcon $active={isActive(href)} $locked={locked}>
+          <NavIconImage src={iconSrc} alt="" $active={isActive(href)} $locked={locked} />
+        </NavIcon>
         {!collapsed && (
           <>
             <NavLabel $active={isActive(href)} $locked={locked}>{label}</NavLabel>

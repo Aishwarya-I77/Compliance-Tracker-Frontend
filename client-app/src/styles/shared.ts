@@ -3,7 +3,7 @@
 // Import individual pieces wherever needed
 
 import styled from "styled-components";
-import { Layout, Input, Avatar, Button } from "antd";
+import { Layout, Input, Avatar } from "antd";
 import { colors, fonts, transitions } from "./theme";
 
 // ── Typography ───────────────────────────────────────────────────

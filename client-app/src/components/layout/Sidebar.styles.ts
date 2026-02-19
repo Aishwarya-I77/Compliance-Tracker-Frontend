@@ -31,7 +31,7 @@ export const LogoArea = styled.div<{ $collapsed: boolean }>`
   align-items: center;
   justify-content: ${({ $collapsed }) => ($collapsed ? "center" : "flex-start")};
   padding: ${({ $collapsed }) => ($collapsed ? "0" : `0 16px`)};
-  border-bottom: 1px solid ${colors.sidebarStroke};
+  // border-bottom: 1px solid ${colors.sidebarStroke};
   flex-shrink: 0;
 `;
 
@@ -118,6 +118,20 @@ export const NavIcon = styled.span<{ $active: boolean; $locked: boolean }>`
   transition: color ${transitions.fast};
 `;
 
+export const NavIconImage = styled.img<{ $active: boolean; $locked: boolean }>`
+  width: ${sizes.navIconSize}px;
+  height: ${sizes.navIconSize}px;
+  object-fit: contain;
+  display: block;
+  opacity: ${({ $locked }) => ($locked ? 0.45 : 1)};
+  filter: ${({ $active, $locked }) => {
+    if ($locked) return "grayscale(1)";
+    if ($active) return "brightness(0) invert(1)";
+    return "none";
+  }};
+  transition: filter ${transitions.fast}, opacity ${transitions.fast};
+`;
+
 export const NavLabel = styled.span<{ $active: boolean; $locked: boolean }>`
   font-size: ${fonts.sizeMd};
   font-weight: ${({ $active }) => ($active ? fonts.weightSemibold : fonts.weightRegular)};
@@ -144,16 +158,24 @@ export const BottomDivider = styled.div`
   height: 1px;
   background: ${colors.sidebarStroke};
   flex-shrink: 0;
+   margin-top: 220px;
 `;
 
 export const CollapseBtn = styled.button<{ $collapsed: boolean }>`
   width: 100%;
   height: 52px;
+  
+
+  // margin-top:0px;
   display: flex;
+  
   align-items: center;
-  justify-content: ${({ $collapsed }) => ($collapsed ? "center" : "flex-start")};
-  padding: ${({ $collapsed }) =>
-    $collapsed ? "0" : `0 0 0 ${sizes.navPaddingLeft}px`};
+  justify-content: ${({ $collapsed }) =>
+    $collapsed ? "center" : "flex-end"};
+
+  padding-right: ${({ $collapsed }) =>
+    $collapsed ? "0" : "20px"};   /* 👈 add space from right */
+
   background: none;
   border: none;
   cursor: pointer;
@@ -161,5 +183,8 @@ export const CollapseBtn = styled.button<{ $collapsed: boolean }>`
   font-size: 21px;
   flex-shrink: 0;
   transition: color ${transitions.fast};
-  &:hover { color: ${colors.white}; }
+
+  &:hover {
+    color: ${colors.white};
+  }
 `;

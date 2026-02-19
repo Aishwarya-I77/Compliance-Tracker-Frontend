@@ -4,7 +4,7 @@ import StyledComponentsRegistry from "@/lib/registry";
 
 export const metadata: Metadata = {
   title: "AcquantHR Compliance Tracker",
-  description: "Compliance management platform for modern enterprises",
+  description: "Compliance Management Platform for Modern Enterprises",
 };
 
 export default function RootLayout({

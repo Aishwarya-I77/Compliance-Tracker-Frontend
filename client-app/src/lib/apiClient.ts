@@ -1,11 +1,9 @@
-// src/lib/apiClient.ts
-
 import { getToken } from "@/lib/auth";
-import { LoginRequest, LoginResponse, ApiResponse } from "@/types/auth";
+import { ApiResponse } from "@/types/common";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8082";
 
-class ApiError extends Error {
+export class ApiError extends Error {
   constructor(
     public status: number,
     message: string
@@ -15,13 +13,13 @@ class ApiError extends Error {
   }
 }
 
-async function request<T>(
+export async function apiRequest<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
   const token = getToken();
 
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const response = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -30,30 +28,17 @@ async function request<T>(
     },
   });
 
-  if (!res.ok) {
-    let message = `Request failed: ${res.status}`;
+  if (!response.ok) {
+    let message = `Request failed: ${response.status}`;
     try {
-      const body = await res.json();
-      console.log("🔴 Backend error response:", body);
+      const body = await response.json(); 
       message = body.message || body.error || message;
     } catch {
-      // ignore
+      // Keep default message when backend body cannot be parsed.
     }
-    throw new ApiError(res.status, message);
+    throw new ApiError(response.status, message);
   }
 
-  // ← Unwrap the "data" field from the backend wrapper
-  const json = await res.json() as ApiResponse<T>;
+  const json = (await response.json()) as ApiResponse<T>;
   return json.data;
 }
-
-export const authApi = {
-  login(payload: LoginRequest): Promise<LoginResponse> {
-    return request<LoginResponse>("/auth/login", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
-  },
-};
-
-export { ApiError };

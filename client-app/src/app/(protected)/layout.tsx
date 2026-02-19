@@ -7,7 +7,8 @@ import { Layout, Spin } from "antd";
 import styled from "styled-components";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/auth/hooks";
+import { ROUTES } from "@/constants/routes";
 import { AppContent } from "@/styles/shared";
 import { colors, fonts } from "@/styles/theme";
 
@@ -31,7 +32,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const [sidebarWidth, setSidebarWidth] = useState(210);
 
   useEffect(() => {
-    if (!loading && !session) router.replace("/login");
+    if (!loading && !session) router.replace(ROUTES.login);
   }, [loading, session, router]);
 
   if (loading) return <LoaderWrap><Spin size="large" /></LoaderWrap>;

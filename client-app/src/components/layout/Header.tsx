@@ -12,12 +12,12 @@ import {
   BarChartOutlined, BellFilled, CustomerServiceOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/auth/hooks";
 import {
   HeaderWrap, PageInfo, PageIconWrap, HeaderActions,
   MenuProfileWrap, MenuUserName, MenuUserEmail,
   HeaderSearch, BellButton, AvatarButton, PrimaryAvatar, PageTitle,
-} from "./styles/Header.styles";
+} from "./Header.styles";
 
 // ─── Page map ─────────────────────────────────────
 const PAGE_MAP: Record<string, { label: string; icon: React.ReactNode }> = {

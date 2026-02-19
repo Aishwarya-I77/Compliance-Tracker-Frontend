@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import StyledComponentsRegistry from "@/lib/registry";
+import StoreProvider from "@/store/StoreProvider";
 
 export const metadata: Metadata = {
   title: "AcquantHR Compliance Tracker",
@@ -16,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body style={{ margin: 0, padding: 0, fontFamily: "'DM Sans', 'Segoe UI', sans-serif" }}>
         <StyledComponentsRegistry>
-          {children}
+          <StoreProvider>{children}</StoreProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

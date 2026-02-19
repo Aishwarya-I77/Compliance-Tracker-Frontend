@@ -1,20 +1,8 @@
-// src/types/auth.ts
-
-// Matches backend LoginRequest DTO
 export interface LoginRequest {
   email: string;
   password: string;
 }
 
-// ← ADD THIS — the wrapper the backend sends
-export interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  timestamp: string;
-  data: T;
-}
-
-// Matches backend LoginResponse DTO exactly
 export interface LoginResponse {
   token: string;
   userId: number;
@@ -26,7 +14,6 @@ export interface LoginResponse {
   categoryAccess: string[];
 }
 
-// Parsed session stored in cookie
 export interface AuthSession {
   token: string;
   userId: number;
@@ -43,4 +30,4 @@ export type UserRole =
   | "CLIENT_USER"
   | "INTERNAL_USER"
   | "SUPER_ADMIN"
-  | "INTERNAL_SUPER_ADMIN"; // ← also add this role
+  | "INTERNAL_SUPER_ADMIN";
